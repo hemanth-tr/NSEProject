@@ -5,6 +5,7 @@ __pycache__/
 
 # ignore *.xlsx
 *.xlsx
+sample.py
 
 # C extensions
 *.so
