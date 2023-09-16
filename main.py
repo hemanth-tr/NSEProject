@@ -1,16 +1,21 @@
-# This is a sample Python script.
+from jugaad_data.nse import NSELive
+import json
+from prettytable import PrettyTable
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+stock = 'HAL'
 
+n = NSELive().stock_quote(stock)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+currentTrend = 'Bullish' if n['priceInfo']['open'] < n['priceInfo']['close'] else 'Bearish'
+change = str(n['priceInfo']['close'] - n['priceInfo']['open'])[0:7]
 
+currentTrend = f'{currentTrend} ({change})'
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Initiate and Formulate the headers of the table
+table = PrettyTable(['SYMBOL', 'Industry', 'Prev close', 'CMP', 'Day\'s trend', 'ListingDate'])
+table.add_row([n['info']['symbol'], n['industryInfo']['sector'], n['priceInfo']['previousClose'], n['priceInfo']['lastPrice'], currentTrend, n['metadata']['listingDate']])
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(table)
+
+#pretty_json = json.dumps(n, indent=4)
+#print(pretty_json)
